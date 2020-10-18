@@ -20,7 +20,7 @@ Development requirements:
 Set up a development environment:
 
 ```shell
-$ git clone https://github.com/vlasovskikh/xdu.git
+$ git clone https://github.com/vlasovskikh/pyxdu.git
 $ poetry run pyxdu --help
 $ du | poetry run pyxdu
 ```
