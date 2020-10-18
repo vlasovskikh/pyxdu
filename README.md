@@ -6,7 +6,7 @@ Display the output of "du" in a window.
 "pyxdu" is a Python port of "xdu", an X window utility last updated on 
 1994-06-05.
 
-Current status: pyxdu is not released yet. It's in active development.
+Current status: pyxdu is **not released yet**. It's in active development.
 
 
 Development
