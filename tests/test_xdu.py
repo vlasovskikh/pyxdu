@@ -23,28 +23,22 @@ def test_parse_simple():
     with StringIO(s) as fd:
         top = xdu.parse_fd(fd)
     assert top.to_json() == {
-        "name": "[root]",
+        "name": "/",
         "size": 30,
         "children": [
             {
-                "name": "/",
+                "name": "foo",
                 "size": 30,
                 "children": [
                     {
-                        "name": "foo",
-                        "size": 30,
-                        "children": [
-                            {
-                                "name": "bar",
-                                "size": 20,
-                                "children": [],
-                            },
-                            {
-                                "name": "baz",
-                                "size": 10,
-                                "children": [],
-                            },
-                        ],
+                        "name": "bar",
+                        "size": 20,
+                        "children": [],
+                    },
+                    {
+                        "name": "baz",
+                        "size": 10,
+                        "children": [],
                     },
                 ],
             },
@@ -58,8 +52,7 @@ def test_implicit_size():
 10  /foo/baz
 """
     with StringIO(s) as fd:
-        top = xdu.parse_fd(fd)
-    root = top.children[0]
+        root = xdu.parse_fd(fd)
     assert root.name == "/"
     assert root.size == 30
     foo = root.children[0]

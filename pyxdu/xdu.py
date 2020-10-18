@@ -148,5 +148,11 @@ def parse_fd(fd: TextIO) -> Node:
         parts = list(PurePath(name).parts)
         if len(parts) > 0:
             top.add_tree(parts, size)
+
+    # don't display root if only one child
+    if len(top.children) == 1:
+        top = top.children[0]
+
     top.fix_tree()
+
     return top

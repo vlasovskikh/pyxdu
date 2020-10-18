@@ -38,10 +38,6 @@ def main(argv: List[str]) -> None:
     if order != Order.DEFAULT:
         debug("sort_tree(top, order)")
 
-    # don't display root if only one child
-    if len(top.children) == 1:
-        top = top.children[0]
-
     if opts["--dump"]:
         print(top.dump_tree())
     else:
