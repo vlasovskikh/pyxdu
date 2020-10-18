@@ -25,7 +25,6 @@ def main(argv: List[str]) -> None:
     order = Order.DEFAULT
     opts = docopt.docopt(__doc__, argv)
 
-    debug("xsetup(...)")
     if opts["<filename>"] in ("-", None):
         if os.isatty(sys.stdin.fileno()):
             print(docopt.printable_usage(__doc__), file=sys.stderr)
