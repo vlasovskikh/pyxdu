@@ -21,6 +21,8 @@ Set up a development environment:
 
 ```shell
 $ git clone https://github.com/vlasovskikh/pyxdu.git
+$ cd pyxdu
+$ poetry install
 $ poetry run pyxdu --help
 $ du | poetry run pyxdu
 ```
