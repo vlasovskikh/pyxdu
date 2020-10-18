@@ -17,6 +17,7 @@ from typing import List
 
 import docopt
 
+from pyxdu.tk import main_loop
 from pyxdu.xdu import Order, parse_file
 
 
@@ -44,7 +45,7 @@ def main(argv: List[str]) -> None:
     if opts["--dump"]:
         print(top.dump_tree())
     else:
-        debug("xmainloop()")
+        main_loop(top)
 
 
 def run() -> None:

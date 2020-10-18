@@ -56,6 +56,7 @@ class Node:
         self.name = name
         self.size = size
         self.num = self.n_nodes
+        self.rect = Rect(0, 0, 0, 0)
         self.children = []
         self.parent = None
         self.n_nodes += 1
@@ -112,6 +113,15 @@ class Node:
     def __le__(self, other: Node) -> bool:
         # TODO: Add non-default orders
         return self.num < other.num
+
+    def __repr__(self):
+        return f'<Node: {self.name}, {self.size}, children=' \
+               f'{len(self.children)}>'
+
+    def clear_rects(self):
+        self.rect = Rect(0, 0, 0, 0)
+        for child in self.children:
+            child.clear_rects()
 
     def to_json(self) -> dict:
         return {
