@@ -58,3 +58,20 @@ def test_implicit_size():
     foo = root.children[0]
     assert foo.name == "foo"
     assert foo.size == 30
+
+
+def test_no_size_in_between():
+    s = """\
+10 /foo
+20 /foo/bar/baz
+"""
+    with StringIO(s) as fd:
+        root = xdu.parse_fd(fd)
+    assert root.name == "/"
+    assert root.size == 10
+    foo = root.children[0]
+    assert foo.name == "foo"
+    assert foo.size == 10
+    bar = foo.children[0]
+    assert bar.name == "bar"
+    assert bar.size == 20

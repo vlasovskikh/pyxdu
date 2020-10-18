@@ -78,9 +78,9 @@ class Node:
         """This function repairs the tree when certain nodes haven't
         had their sizes initialized. [DPT911113]
         """
-        if self.size >= 0:
-            return self.size
-        self.size = sum(c.fix_tree() for c in self.children)
+        children_size = sum(c.fix_tree() for c in self.children)
+        if self.size < 0:
+            self.size = children_size
         return self.size
 
     def add_tree(self, path: List[str], size: int) -> None:
