@@ -114,11 +114,11 @@ class Node:
         # TODO: Add non-default orders
         return self.num < other.num
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'<Node: {self.name}, {self.size}, children=' \
                f'{len(self.children)}>'
 
-    def clear_rects(self):
+    def clear_rects(self) -> None:
         self.rect = Rect(0, 0, 0, 0)
         for child in self.children:
             child.clear_rects()
