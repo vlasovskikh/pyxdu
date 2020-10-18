@@ -31,17 +31,18 @@ def main(argv: List[str]) -> None:
             print(docopt.printable_usage(__doc__), file=sys.stderr)
             sys.exit(1)
         else:
-            top = parse_file("-")
+            filename = "-"
     else:
-        top = parse_file(opts["<filename>"])
+        filename = opts["<filename>"]
 
     if order != Order.DEFAULT:
         debug("sort_tree(top, order)")
 
     if opts["--dump"]:
+        top = parse_file(filename)
         print(top.dump_tree())
     else:
-        main_loop(top)
+        main_loop(filename)
 
 
 def run() -> None:

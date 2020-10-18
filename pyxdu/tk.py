@@ -1,6 +1,6 @@
 from tkinter import Canvas, Tk
 
-from pyxdu.xdu import Node, Rect
+from pyxdu.xdu import Node, Rect, parse_file
 
 n_cols = 5
 
@@ -46,14 +46,15 @@ def repaint(canvas: Canvas, node: Node, width: int, height: int) -> None:
     draw_node(canvas, node, rect)
 
 
-def main_loop(node: Node) -> None:
+def main_loop(filename: str) -> None:
     tk = Tk()
     tk.title("pyxdu")
     width = 800
     height = 600
     canvas = Canvas(tk, width=width, height=height)
     canvas.pack()
-    repaint(canvas, node, width, height)
+    top = parse_file(filename)
+    repaint(canvas, top, width, height)
 
     # Hack to bring the window to the foreground
     tk.attributes('-topmost', True)
