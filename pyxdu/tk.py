@@ -46,7 +46,13 @@ class XduCanvas(Canvas):
 
         # TODO: Ability to disable show size
         name = f"{name} ({size})"
-        self.create_text(rect.left, rect.top, text=name)
+        text_id = self.create_text(
+            rect.left + 5, rect.top + rect.height / 2, text=name, anchor=tkinter.W
+        )
+        x1, y1, x1, y2 = self.bbox(text_id)
+        height = y2 - y1
+        if rect.height < height + 2:
+            self.delete(text_id)
 
     def repaint(self, width: int, height: int) -> None:
         rect = Rect(3, 3, int(width / n_cols) - 2, height - 2)
