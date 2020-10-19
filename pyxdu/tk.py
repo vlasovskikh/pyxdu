@@ -16,8 +16,7 @@ class XduCanvas(Canvas):
     def draw_node(self, rect: Rect) -> None:
         self.draw_rect(self.node.name, self.node.size, rect)
         self.node.rect = rect
-        sub_rect = Rect(rect.left + rect.width, rect.top, rect.width,
-                        rect.height)
+        sub_rect = Rect(rect.left + rect.width, rect.top, rect.width, rect.height)
         self.draw_children(self.node, sub_rect)
 
     def draw_children(self, node: Node, rect: Rect) -> None:
@@ -71,9 +70,9 @@ def main_loop(filename: str) -> None:
     canvas.repaint(height, height)
 
     # Hack to bring the window to the foreground
-    tk.attributes('-topmost', True)
+    tk.attributes("-topmost", True)
     tk.update()
-    tk.attributes('-topmost', False)
+    tk.attributes("-topmost", False)
 
     # TODO: Update on resize
     # TODO: Handle clicks

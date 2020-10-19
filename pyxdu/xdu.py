@@ -115,8 +115,7 @@ class Node:
         return self.num < other.num
 
     def __repr__(self) -> str:
-        return f'<Node: {self.name}, {self.size}, children=' \
-               f'{len(self.children)}>'
+        return f"<Node: {self.name}, {self.size}, children=" f"{len(self.children)}>"
 
     def clear_rects(self) -> None:
         self.rect = Rect(0, 0, 0, 0)
