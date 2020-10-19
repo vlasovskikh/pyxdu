@@ -1,3 +1,4 @@
+import tkinter
 from tkinter import Canvas, Tk
 
 from pyxdu.xdu import Node, Rect, parse_file
@@ -39,7 +40,9 @@ class XduCanvas(Canvas):
                 top += height
 
     def draw_rect(self, name: str, size: int, rect: Rect) -> None:
-        self.create_rectangle(rect.left, rect.top, rect.width, rect.height)
+        self.create_rectangle(
+            rect.left, rect.top, rect.left + rect.width, rect.top + rect.height
+        )
 
         # TODO: Ability to disable show size
         name = f"{name} ({size})"
