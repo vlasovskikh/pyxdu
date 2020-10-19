@@ -49,7 +49,7 @@ class XduCanvas(Canvas):
         self.create_text(rect.left, rect.top, text=name)
 
     def repaint(self, width: int, height: int) -> None:
-        rect = Rect(0, 0, int(width / n_cols), height)
+        rect = Rect(3, 3, int(width / n_cols) - 2, height - 2)
         self.node.clear_rects()
         self.draw_node(rect)
 
