@@ -7,11 +7,16 @@ n_cols = 5
 
 
 class XduCanvas(Canvas):
+    top: Node
     node: Node
+    text_height: int
 
     def __init__(self, node: Node, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.top = node
         self.node = node
+        self.bind("<Button-1>", self.on_click)
+        self.text_height = self.determine_text_height()
 
     def draw_node(self, rect: Rect) -> None:
         self.draw_rect(self.node.name, self.node.size, rect)
@@ -44,19 +49,31 @@ class XduCanvas(Canvas):
         )
 
         # TODO: Ability to disable show size
-        name = f"{name} ({size})"
-        text_id = self.create_text(
-            rect.left + 5, rect.top + rect.height / 2, text=name, anchor=tkinter.W
-        )
+        if rect.height >= self.text_height + 2:
+            name = f"{name} ({size})"
+            self.create_text(
+                rect.left + 5, rect.top + rect.height / 2, text=name, anchor=tkinter.W
+            )
+
+    def determine_text_height(self) -> int:
+        text_id = self.create_text(0, 0, text="A")
         x1, y1, x1, y2 = self.bbox(text_id)
-        height = y2 - y1
-        if rect.height < height + 2:
-            self.delete(text_id)
+        self.delete(text_id)
+        return y2 - y1
 
     def repaint(self, width: int, height: int) -> None:
         rect = Rect(3, 3, int(width / n_cols) - 2, height - 2)
+        self.delete("all")
         self.node.clear_rects()
         self.draw_node(rect)
+
+    def on_click(self, event) -> None:
+        n = self.node.find_node(event.x, event.y)
+        if n == self.node:
+            n = self.node.parent
+        if n is not None:
+            self.node = n
+            self.repaint(800, 600)
 
 
 def main_loop(filename: str) -> None:
