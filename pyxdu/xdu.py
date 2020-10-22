@@ -106,11 +106,7 @@ class Node:
         else:
             self.children.insert(self.children.index(ge), child)
 
-    def __eq__(self, other: Node) -> bool:
-        # TODO: Add non-default orders
-        return self.num == other.num
-
-    def __le__(self, other: Node) -> bool:
+    def __lt__(self, other: Node) -> bool:
         # TODO: Add non-default orders
         return self.num < other.num
 
