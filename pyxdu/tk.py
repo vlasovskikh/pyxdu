@@ -25,14 +25,17 @@ class XduCanvas(Canvas):
         self.draw_children(self.node, sub_rect)
 
     def draw_children(self, node: Node, rect: Rect) -> None:
-        # if node.size == 0:
-        #     node.size = sum((c.size for c in node.children))
         top = rect.top
-        total_size = node.size
+
+        total_size = sum(c.size for c in node.children)
+        if total_size == 0:
+            total_size = node.size
+        if total_size == 0:
+            return
 
         for child in node.children:
-            size = child.size / total_size
-            height = int(size * rect.height + 0.5)
+            percentage = child.size / total_size
+            height = int(percentage * rect.height + 0.5)
             if height > 1:
                 c_rect = Rect(rect.left, top, rect.width, height)
                 self.draw_rect(child.name, child.size, c_rect)
