@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from functools import total_ordering
 from pathlib import PurePath
-from typing import List, ClassVar, Optional, TextIO
+from typing import List, ClassVar, Optional, TextIO, Dict
 
 __all__ = ["Rect", "Order", "Node", "parse_file", "parse_fd"]
 
@@ -47,6 +47,7 @@ class Node:
     num: int  # entry number - for resorting
     rect: Rect  # last drawn screen rectangle
     children: List[Node]  # list of children
+    children_by_name: Dict[str, Node]  # cache children by name
     parent: Optional[Node]  # back-pointer to parent
 
     n_nodes: ClassVar[int] = 0
@@ -58,6 +59,7 @@ class Node:
         self.num = Node.n_nodes
         self.rect = Rect(0, 0, 0, 0)
         self.children = []
+        self.children_by_name = {}
         self.parent = None
         Node.n_nodes += 1
 
@@ -86,7 +88,7 @@ class Node:
     def add_tree(self, path: List[str], size: int) -> None:
         """Add a path as a child - recursively."""
         first, *rest = path
-        child = next((c for c in self.children if c.name == first), None)
+        child = self.children_by_name.get(first)
 
         if child is None:
             child = Node(first, -1)
@@ -105,6 +107,7 @@ class Node:
             self.children.append(child)
         else:
             self.children.insert(self.children.index(ge), child)
+        self.children_by_name[child.name] = child
 
     def __lt__(self, other: Node) -> bool:
         # TODO: Add non-default orders
