@@ -151,6 +151,7 @@ def parse_fd(fd: TextIO) -> Node:
     # don't display root if only one child
     if len(top.children) == 1:
         top = top.children[0]
+        top.parent = None
 
     top.fix_tree()
 
