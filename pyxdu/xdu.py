@@ -125,7 +125,7 @@ class Node:
         }
 
     def dump_tree(self) -> str:
-        return json.dumps(self.to_json(), ensure_ascii=False, indent=4)
+        return json.dumps(self.to_json(), ensure_ascii=False)
 
 
 def parse_file(filename: str) -> Node:
