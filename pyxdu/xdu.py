@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import bisect
 import json
 import re
 import sys
@@ -101,12 +102,7 @@ class Node:
 
     def insert_child(self, child: Node) -> None:
         child.parent = self
-        ge = next((c for c in self.children if child < c), None)
-
-        if ge is None:
-            self.children.append(child)
-        else:
-            self.children.insert(self.children.index(ge), child)
+        bisect.insort_left(self.children, child)
         self.children_by_name[child.name] = child
 
     def __lt__(self, other: Node) -> bool:
