@@ -55,11 +55,11 @@ class Node:
         """Create a new node with the given name and size info."""
         self.name = name
         self.size = size
-        self.num = self.n_nodes
+        self.num = Node.n_nodes
         self.rect = Rect(0, 0, 0, 0)
         self.children = []
         self.parent = None
-        self.n_nodes += 1
+        Node.n_nodes += 1
 
     def find_node(self, x: int, y: int) -> Optional[Node]:
         """Return the node (if any) which has a draw rectangle containing
