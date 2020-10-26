@@ -1,12 +1,12 @@
 """pyxdu - Display the output of "du" in a window.
 
-Usage: pyxdu [options] <filename>
+Usage: pyxdu [options] <file>
        pyxdu [options] [-]
        pyxdu --help
 
 Options:
     -h --help       Show this message.
-    --dump          Dump tree as JSON for debugging.
+    --dump <file>   Dump tree as JSON for debugging.
 """
 
 import logging
@@ -25,21 +25,23 @@ def main(argv: List[str]) -> None:
     order = Order.DEFAULT
     opts = docopt.docopt(__doc__, argv)
 
-    if opts["<filename>"] in ("-", None):
+    if opts["<file>"] in ("-", None):
         if os.isatty(sys.stdin.fileno()):
             print(docopt.printable_usage(__doc__), file=sys.stderr)
             sys.exit(1)
         else:
             filename = "-"
     else:
-        filename = opts["<filename>"]
+        filename = opts["<file>"]
 
     if order != Order.DEFAULT:
         debug("sort_tree(top, order)")
 
-    if opts["--dump"]:
+    dump_file = opts["--dump"]
+    if dump_file:
         top = parse_file(filename)
-        print(top.dump_tree())
+        with open(dump_file, "w") as fd:
+            fd.write(top.dump_tree())
     else:
         main_loop(filename)
 
