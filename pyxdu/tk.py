@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import Canvas, Tk
 
-from pyxdu.xdu import Node, Rect, parse_file
+from pyxdu.xdu import Node, Rect, parse_file, Order
 
 n_cols = 5
 
@@ -79,12 +79,14 @@ class XduCanvas(Canvas):
             self.repaint(800, 600)
 
 
-def main_loop(filename: str) -> None:
+def main_loop(filename: str, order: Order) -> None:
     tk = Tk()
     tk.title("pyxdu")
     width = 800
     height = 600
     top = parse_file(filename)
+    if order != Order.DEFAULT:
+        top.sort_tree(order)
     canvas = XduCanvas(top, tk, width=width, height=height)
     canvas.pack()
     canvas.repaint(height, height)

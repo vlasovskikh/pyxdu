@@ -6,6 +6,7 @@ Usage: pyxdu [options] <file>
 
 Options:
     -h --help       Show this message.
+    -n              Sort in numerical order.
     --dump <file>   Dump tree as JSON for debugging.
 """
 
@@ -34,16 +35,18 @@ def main(argv: List[str]) -> None:
     else:
         filename = opts["<file>"]
 
-    if order != Order.DEFAULT:
-        debug("sort_tree(top, order)")
+    if opts["-n"]:
+        order = Order.SIZE
 
     dump_file = opts["--dump"]
     if dump_file:
         top = parse_file(filename)
+        if order != Order.DEFAULT:
+            top.sort_tree(order)
         with open(dump_file, "w") as fd:
             fd.write(top.dump_tree())
     else:
-        main_loop(filename)
+        main_loop(filename, order)
 
 
 def run() -> None:

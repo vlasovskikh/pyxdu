@@ -75,3 +75,23 @@ def test_no_size_in_between():
     bar = foo.children[0]
     assert bar.name == "bar"
     assert bar.size == 20
+
+
+def test_sort_by_size():
+    s = """\
+20  /foo
+30  /bar
+10  /baz
+"""
+    with StringIO(s) as fd:
+        root = xdu.parse_fd(fd)
+    root.sort_tree(xdu.Order.SIZE)
+    assert root.to_json() == {
+        "name": "/",
+        "size": 60,
+        "children": [
+            {"children": [], "name": "bar", "size": 30},
+            {"children": [], "name": "foo", "size": 20},
+            {"children": [], "name": "baz", "size": 10},
+        ],
+    }

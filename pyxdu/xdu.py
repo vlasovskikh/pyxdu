@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from functools import total_ordering
 from pathlib import PurePath
-from typing import List, ClassVar, Optional, TextIO, Dict
+from typing import List, ClassVar, Optional, TextIO, Dict, Any
 
 __all__ = ["Rect", "Order", "Node", "parse_file", "parse_fd"]
 
@@ -20,6 +20,12 @@ class Order(Enum):
     SIZE = auto()
     R_ALPHA = auto()
     R_SIZE = auto()
+
+    def sort_key(self, node: Node) -> Any:
+        if self == Order.SIZE:
+            return -node.size
+        else:
+            return node.num
 
 
 @dataclass
@@ -126,6 +132,11 @@ class Node:
 
     def dump_tree(self) -> str:
         return json.dumps(self.to_json(), ensure_ascii=False)
+
+    def sort_tree(self, order: Order) -> None:
+        for child in self.children:
+            child.sort_tree(order)
+        self.children.sort(key=order.sort_key)
 
 
 def parse_file(filename: str) -> Node:
