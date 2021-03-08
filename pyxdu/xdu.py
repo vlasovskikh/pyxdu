@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from functools import total_ordering
 from pathlib import PurePath
-from typing import List, ClassVar, Optional, TextIO, Dict, Any
+from typing import List, ClassVar, Optional, TextIO, Dict, Any, Union
 
 __all__ = ["Rect", "Order", "Node", "parse_file", "parse_fd"]
 
@@ -140,7 +140,7 @@ class Node:
 
 
 def parse_file(filename: str) -> Node:
-    fn = sys.stdin.fileno() if filename == "-" else filename
+    fn: Union[int, str] = sys.stdin.fileno() if filename == "-" else filename
     with open(fn, "r") as file:
         return parse_fd(file)
 
@@ -148,8 +148,8 @@ def parse_file(filename: str) -> Node:
 def parse_fd(fd: TextIO) -> Node:
     top = Node("[root]", -1)
     for line in fd:
-        size, name = re.split(r"\s+", line.strip(), 1)
-        size = int(size)
+        size_str, name = re.split(r"\s+", line.strip(), 1)
+        size = int(size_str)
         parts = list(PurePath(name).parts)
         if len(parts) > 0:
             top.add_tree(parts, size)
