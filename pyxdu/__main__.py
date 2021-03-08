@@ -13,7 +13,6 @@ Options:
 import logging
 import os
 import sys
-from logging import debug
 from typing import List
 
 import docopt
