@@ -28,7 +28,7 @@ jobs:
           poetry install
       - name: Lint with flake8
         run: |
-          portry run flake8 --max-line-length=88
+          poetry run flake8 --max-line-length=88
       - name: Lint with Mypy
         run: |
           poetry run mypy .
