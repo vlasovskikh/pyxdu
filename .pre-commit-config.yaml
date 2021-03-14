@@ -14,3 +14,12 @@ repos:
     hooks:
       - id: mypy
         args: []
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: poetry run pytest tests
+        language: system
+        types:
+          - python
+        pass_filenames: false
