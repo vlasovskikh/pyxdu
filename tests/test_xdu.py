@@ -3,7 +3,7 @@ from io import StringIO
 from pyxdu import xdu
 
 
-def test_parse_empty():
+def test_parse_empty() -> None:
     s = ""
     with StringIO(s) as fd:
         top = xdu.parse_fd(fd)
@@ -14,7 +14,7 @@ def test_parse_empty():
     }
 
 
-def test_parse_simple():
+def test_parse_simple() -> None:
     s = """\
 30  /foo
 20  /foo/bar
@@ -46,7 +46,7 @@ def test_parse_simple():
     }
 
 
-def test_implicit_size():
+def test_implicit_size() -> None:
     s = """\
 20  /foo/bar
 10  /foo/baz
@@ -60,7 +60,7 @@ def test_implicit_size():
     assert foo.size == 30
 
 
-def test_no_size_in_between():
+def test_no_size_in_between() -> None:
     s = """\
 10 /foo
 20 /foo/bar/baz
@@ -77,7 +77,7 @@ def test_no_size_in_between():
     assert bar.size == 20
 
 
-def test_sort_by_size():
+def test_sort_by_size() -> None:
     s = """\
 20  /foo
 30  /bar

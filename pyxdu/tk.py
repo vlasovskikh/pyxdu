@@ -1,5 +1,6 @@
 import tkinter
 from tkinter import Canvas, Tk
+from typing import Any
 
 from pyxdu.xdu import Node, Rect, parse_file, Order
 
@@ -11,7 +12,7 @@ class XduCanvas(Canvas):
     node: Node
     text_height: int
 
-    def __init__(self, node: Node, *args, **kwargs):
+    def __init__(self, node: Node, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.top = node
         self.node = node
@@ -70,7 +71,7 @@ class XduCanvas(Canvas):
         self.node.clear_rects()
         self.draw_node(rect)
 
-    def on_click(self, event) -> None:
+    def on_click(self, event: Any) -> None:
         n = self.node.find_node(event.x, event.y)
         if n == self.node:
             n = self.node.parent
