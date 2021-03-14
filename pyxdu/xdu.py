@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import bisect
 import json
 import re
 import sys
 from dataclasses import dataclass
 from enum import Enum, auto
-from functools import total_ordering
 from pathlib import PurePath
 from typing import List, ClassVar, Optional, TextIO, Dict, Any, Union
 
@@ -42,7 +40,6 @@ class Rect:
     height: int
 
 
-@total_ordering
 class Node:
     """Node Structure
 
@@ -108,12 +105,8 @@ class Node:
 
     def insert_child(self, child: Node) -> None:
         child.parent = self
-        bisect.insort_left(self.children, child)
+        self.children.append(child)
         self.children_by_name[child.name] = child
-
-    def __lt__(self, other: Node) -> bool:
-        # TODO: Add non-default orders
-        return self.num < other.num
 
     def __repr__(self) -> str:
         return f"<Node: {self.name}, {self.size}, children=" f"{len(self.children)}>"
