@@ -98,7 +98,6 @@ def main_loop(filename: str, order: Order) -> None:
     tk.attributes("-topmost", False)
 
     # TODO: Update on resize
-    # TODO: Handle clicks
     # TODO: Handle commands
 
     tk.mainloop()
