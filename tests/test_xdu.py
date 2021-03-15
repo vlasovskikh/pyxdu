@@ -95,3 +95,19 @@ def test_sort_by_size() -> None:
             {"children": [], "name": "baz", "size": 10},
         ],
     }
+
+
+def test_parse_root_entry() -> None:
+    s = """\
+0	/foo
+5	/
+"""
+    with StringIO(s) as fd:
+        top = xdu.parse_fd(fd)
+    assert top.to_json() == {
+        "name": "/",
+        "size": 5,
+        "children": [
+            {"children": [], "name": "foo", "size": 0},
+        ],
+    }

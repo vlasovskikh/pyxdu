@@ -146,6 +146,7 @@ def parse_fd(fd: TextIO) -> Node:
         if len(parts) > 0:
             if parts[0] == "":
                 parts[0] = "/"
+            parts = [part for part in parts if part != "" and part != "."]
             top.add_tree(parts, size)
 
     # don't display root if only one child
