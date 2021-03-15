@@ -90,7 +90,7 @@ def main_loop(filename: str, order: Order) -> None:
         top.sort_tree(order)
     canvas = XduCanvas(top, tk, width=width, height=height)
     canvas.pack()
-    canvas.repaint(height, height)
+    canvas.repaint(width, height)
 
     # Hack to bring the window to the foreground
     tk.attributes("-topmost", True)
