@@ -23,6 +23,7 @@ class XduCanvas(tkinter.Canvas):
         self.n_cols = 5
         self.text_height = self.determine_text_height()
         self.bind("<Button-1>", self.on_click)
+        self.bind("<Configure>", self.on_resize)
 
     def draw_node(self, rect: Rect) -> None:
         self.draw_rect(self.node.name, self.node.size, rect)
@@ -87,6 +88,13 @@ class XduCanvas(tkinter.Canvas):
             self.node = n
             self.repaint()
 
+    def on_resize(self, event: Any) -> None:
+        w_scale = event.width / self.width
+        h_scale = event.height / self.height
+        self.scale("all", 0, 0, w_scale, h_scale)
+        self.width = event.width
+        self.height = event.height
+
 
 def main_loop(filename: str, order: Order) -> None:
     tk = tkinter.Tk()
@@ -95,7 +103,7 @@ def main_loop(filename: str, order: Order) -> None:
     if order != Order.DEFAULT:
         top.sort_tree(order)
     canvas = XduCanvas(tk, top, width=800, height=600)
-    canvas.pack()
+    canvas.pack(fill="both", expand=True)
     canvas.repaint()
 
     # Hack to bring the window to the foreground
@@ -103,7 +111,6 @@ def main_loop(filename: str, order: Order) -> None:
     tk.update()
     tk.attributes("-topmost", False)
 
-    # TODO: Update on resize
     # TODO: Handle commands
 
     tk.mainloop()
