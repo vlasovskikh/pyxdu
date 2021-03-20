@@ -39,27 +39,27 @@ class XduCanvas(tkinter.Canvas):
         for child in node.children:
             percentage = child.size / total_size
             height = int(percentage * rect.height + 0.5)
-            if height > 1:
-                c_rect = Rect(rect.left, top, rect.width, height)
-                self.draw_rect(child.name, child.size, c_rect)
-                child.rect = c_rect
+            if height <= 1:
+                continue
+            c_rect = Rect(rect.left, top, rect.width, height)
+            self.draw_rect(child.name, child.size, c_rect)
+            child.rect = c_rect
 
-                c2_rect = Rect(rect.left + rect.width, top, rect.width, height)
-                self.draw_children(child, c2_rect, cols - 1)
+            c2_rect = Rect(rect.left + rect.width, top, rect.width, height)
+            self.draw_children(child, c2_rect, cols - 1)
 
-                top += height
+            top += height
 
     def draw_rect(self, name: str, size: int, rect: Rect) -> None:
-        self.create_rectangle(
-            rect.left, rect.top, rect.left + rect.width, rect.top + rect.height
-        )
+        width = rect.left + rect.width
+        height = rect.top + rect.height
+        self.create_rectangle(rect.left, rect.top, width, height)
 
         # TODO: Ability to disable show size
         if rect.height >= self.text_height + 2:
-            name = f"{name} ({size})"
-            self.create_text(
-                rect.left + 5, rect.top + rect.height / 2, text=name, anchor=tkinter.W
-            )
+            x = rect.left + 5
+            y = rect.top + rect.height / 2
+            self.create_text(x, y, text=f"{name} ({size})", anchor=tkinter.W)
 
     def determine_text_height(self) -> int:
         text_id = self.create_text(0, 0, text="A")
