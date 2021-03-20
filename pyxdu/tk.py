@@ -9,18 +9,18 @@ class XduCanvas(tkinter.Canvas):
     node: Node
     width: int
     height: int
-    n_cols: int
+    columns: int
     text_height: int
 
     def __init__(
-        self, parent: tkinter.Misc, node: Node, width: int, height: int
+        self, parent: tkinter.Misc, node: Node, *, width: int, height: int, columns: int
     ) -> None:
         super().__init__(parent, width=width, height=height)
         self.top = node
         self.node = node
         self.width = width
         self.height = height
-        self.n_cols = 5
+        self.columns = columns
         self.text_height = self.determine_text_height()
         self.bind("<Button-1>", self.on_click)
         self.bind("<Configure>", self.on_resize)
@@ -29,7 +29,7 @@ class XduCanvas(tkinter.Canvas):
         self.node.rect = rect
         self.draw_node(self.node)
         c_rect = Rect(rect.left + rect.width, rect.top, rect.width, rect.height)
-        self.draw_children(self.node, c_rect, self.n_cols - 1)
+        self.draw_children(self.node, c_rect, self.columns - 1)
 
     def draw_children(self, node: Node, rect: Rect, cols: int) -> None:
         if cols <= 0:
@@ -86,7 +86,7 @@ class XduCanvas(tkinter.Canvas):
         return y2 - y1
 
     def repaint(self) -> None:
-        rect = Rect(3, 3, int(self.width / self.n_cols) - 2, self.height - 2)
+        rect = Rect(3, 3, int(self.width / self.columns) - 2, self.height - 2)
         self.delete("all")
         self.node.clear_rects()
         self.draw_node_and_children(rect)
@@ -105,13 +105,13 @@ class XduCanvas(tkinter.Canvas):
         self.repaint()
 
 
-def main_loop(filename: str, order: Order) -> None:
+def main_loop(filename: str, *, order: Order, columns: int) -> None:
     tk = tkinter.Tk()
     tk.title("pyxdu")
     top = parse_file(filename)
     if order != Order.DEFAULT:
         top.sort_tree(order)
-    canvas = XduCanvas(tk, top, width=800, height=600)
+    canvas = XduCanvas(tk, top, width=800, height=600, columns=columns)
     canvas.pack(fill="both", expand=True)
     canvas.repaint()
 

@@ -5,9 +5,10 @@ Usage: pyxdu [options] <file>
        pyxdu --help
 
 Options:
-    -h --help       Show this message.
-    -n              Sort in numerical order.
-    --dump <file>   Dump tree as JSON for debugging.
+    -h --help           Show this message.
+    -n                  Sort in numerical order.
+    -c --columns <num>  Display <num> columns [default: 6].
+    --dump <file>       Dump tree as JSON for debugging.
 """
 
 import docopt
@@ -16,7 +17,7 @@ import sys
 from typing import List
 
 from pyxdu.tk import main_loop
-from pyxdu.xdu import Order, parse_file
+from pyxdu.xdu import Order, parse_file, error
 
 
 def main(argv: List[str]) -> None:
@@ -35,6 +36,12 @@ def main(argv: List[str]) -> None:
     if opts["-n"]:
         order = Order.SIZE
 
+    try:
+        columns = int(opts["--columns"])
+    except ValueError:
+        error("Columns count must be integer")
+        sys.exit(1)
+
     dump_file = opts["--dump"]
     if dump_file:
         top = parse_file(filename)
@@ -43,7 +50,7 @@ def main(argv: List[str]) -> None:
         with open(dump_file, "w") as fd:
             fd.write(top.dump_tree())
     else:
-        main_loop(filename, order)
+        main_loop(filename, order=order, columns=columns)
 
 
 def run() -> None:

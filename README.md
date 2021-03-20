@@ -46,6 +46,8 @@ There are several command line options available.
     * Sort in numerical order.
 * `--dump <file>`
     * Dump tree as JSON for debugging.
+* `-c --columns <num>`
+    * Display \<num\> columns \[default: 6\].
 * ...
 
 
