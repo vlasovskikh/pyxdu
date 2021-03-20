@@ -52,6 +52,7 @@ class XduCanvas(tkinter.Canvas):
         height = int(percentage * parent_rect.height + 0.5)
         if height <= 1:
             return 0
+
         node.rect = Rect(parent_rect.left, top, parent_rect.width, height)
         self.draw_node(node)
 
@@ -67,14 +68,16 @@ class XduCanvas(tkinter.Canvas):
         height = rect.top + rect.height
         self.create_rectangle(rect.left, rect.top, width, height)
 
+        if rect.height < self.text_height + 2:
+            return
+
         # TODO: Ability to disable show size
-        if rect.height >= self.text_height + 2:
-            self.create_text(
-                rect.left + 5,
-                rect.top + rect.height / 2,
-                text=f"{node.name} ({node.size})",
-                anchor=tkinter.W,
-            )
+        self.create_text(
+            rect.left + 5,
+            rect.top + rect.height / 2,
+            text=f"{node.name} ({node.size})",
+            anchor=tkinter.W,
+        )
 
     def determine_text_height(self) -> int:
         text_id = self.create_text(0, 0, text="A")
