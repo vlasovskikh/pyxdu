@@ -1,19 +1,18 @@
 import tkinter
-from tkinter import Canvas, Tk
 from typing import Any
 
 from pyxdu.xdu import Node, Rect, parse_file, Order
 
-n_cols = 5
 
-
-class XduCanvas(Canvas):
+class XduCanvas(tkinter.Canvas):
     top: Node
     node: Node
     text_height: int
+    n_cols: int
 
     def __init__(self, node: Node, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
+        self.n_cols = 5
         self.top = node
         self.node = node
         self.bind("<Button-1>", self.on_click)
@@ -23,16 +22,19 @@ class XduCanvas(Canvas):
         self.draw_rect(self.node.name, self.node.size, rect)
         self.node.rect = rect
         sub_rect = Rect(rect.left + rect.width, rect.top, rect.width, rect.height)
-        self.draw_children(self.node, sub_rect)
+        self.draw_children(self.node, sub_rect, self.n_cols - 1)
 
-    def draw_children(self, node: Node, rect: Rect) -> None:
-        top = rect.top
+    def draw_children(self, node: Node, rect: Rect, cols: int) -> None:
+        if cols <= 0:
+            return
 
         total_size = sum(c.size for c in node.children)
         if total_size == 0:
             total_size = node.size
         if total_size == 0:
             return
+
+        top = rect.top
 
         for child in node.children:
             percentage = child.size / total_size
@@ -43,7 +45,7 @@ class XduCanvas(Canvas):
                 child.rect = c_rect
 
                 c2_rect = Rect(rect.left + rect.width, top, rect.width, height)
-                self.draw_children(child, c2_rect)
+                self.draw_children(child, c2_rect, cols - 1)
 
                 top += height
 
@@ -66,7 +68,7 @@ class XduCanvas(Canvas):
         return y2 - y1
 
     def repaint(self, width: int, height: int) -> None:
-        rect = Rect(3, 3, int(width / n_cols) - 2, height - 2)
+        rect = Rect(3, 3, int(width / self.n_cols) - 2, height - 2)
         self.delete("all")
         self.node.clear_rects()
         self.draw_node(rect)
@@ -81,7 +83,7 @@ class XduCanvas(Canvas):
 
 
 def main_loop(filename: str, order: Order) -> None:
-    tk = Tk()
+    tk = tkinter.Tk()
     tk.title("pyxdu")
     width = 800
     height = 600
