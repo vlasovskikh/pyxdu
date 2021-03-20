@@ -1,8 +1,8 @@
 pyxdu
 =====
 
-_Pyxdu_ is a Python "port" of _xdu_, an X window utility. _Pyxdu_ is a retro tool that
-tries to follow the style of 1990s in its visual design.
+_Pyxdu_ is a Python port of "xdu", an X window disk usage utility. _Pyxdu_ is a retro
+tool that tries to follow the style of 1990s in its visual design.
 
 
 Current status: pyxdu is **not released yet**. It's in active development.
@@ -11,7 +11,20 @@ Current status: pyxdu is **not released yet**. It's in active development.
 Name
 ----
 
-pyxdu — display the output of "du" in a window
+Pyxdu — display the output of "du" disk usage tool in a window
+
+
+Example
+-------
+
+Run "du" to show disk usage for directory _/usr_ in megabytes, pipe the 
+output to
+"pyxdu", sort directories in numerical order:
+
+```shell
+du -m /usr | pyxdu -n
+```
+![Dark theme][dark]
 
 
 Synopsis
@@ -75,14 +88,6 @@ Keystrokes
 
 
 
-Example
--------
-
-```shell
-cd /usr/src
-du > /tmp/du.out
-pyxdu -n /tmp/du.out
-```
 
 
 Development
@@ -119,3 +124,4 @@ version xdu 3.0 was released on 1994-06-05.
 [xdu]: https://github.com/vlasovskikh/xdu
 [poetry]: https://python-poetry.org
 [vlasovskikh]: https://pirx.ru
+[dark]: media/dark.png
