@@ -69,7 +69,10 @@ Keystrokes
     * Sets the number of columns in the display (0 = 10). 
 * `/`
     * Goto the root.
+* `q`, `Escape`
+    * Exit the program.
 * ...
+
 
 
 Example

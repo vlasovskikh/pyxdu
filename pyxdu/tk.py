@@ -6,6 +6,7 @@ from pyxdu.xdu import Node, Rect, parse_file, Order
 
 
 class XduCanvas(tkinter.Canvas):
+    parent: tkinter.Misc
     top: Node
     node: Node
     width: int
@@ -17,18 +18,25 @@ class XduCanvas(tkinter.Canvas):
         self, parent: tkinter.Misc, node: Node, *, width: int, height: int, columns: int
     ) -> None:
         super().__init__(parent, width=width, height=height)
+        self.parent = parent
         self.top = node
         self.node = node
         self.width = width
         self.height = height
         self.columns = columns
         self.text_height = self.determine_text_height()
+
+        self.bind_handlers()
+        self.repaint()
+
+    def bind_handlers(self) -> None:
         self.bind("<Button-1>", self.on_click)
         self.bind("<Configure>", self.on_resize)
         for i in range(10):
             self.bind(f"<KeyPress-{i}>", self.on_n_columns)
         self.bind("<KeyPress-/>", self.on_reset)
-        self.repaint()
+        self.bind("<KeyPress-q>", self.on_quit)
+        self.bind("<Escape>", self.on_quit)
 
     def draw_node_and_children(self, rect: Rect) -> None:
         self.node.rect = rect
@@ -117,6 +125,9 @@ class XduCanvas(tkinter.Canvas):
     def on_reset(self, _event: Any) -> None:
         self.node = self.top
         self.repaint()
+
+    def on_quit(self, _event: Any) -> None:
+        self.parent.destroy()
 
 
 def main_loop(filename: str, *, order: Order, columns: int) -> None:
