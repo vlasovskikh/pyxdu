@@ -25,11 +25,11 @@ class XduCanvas(tkinter.Canvas):
         self.bind("<Button-1>", self.on_click)
         self.bind("<Configure>", self.on_resize)
 
-    def draw_node(self, rect: Rect) -> None:
-        self.draw_rect(self.node.name, self.node.size, rect)
+    def draw_node_and_children(self, rect: Rect) -> None:
         self.node.rect = rect
-        sub_rect = Rect(rect.left + rect.width, rect.top, rect.width, rect.height)
-        self.draw_children(self.node, sub_rect, self.n_cols - 1)
+        self.draw_node(self.node)
+        c_rect = Rect(rect.left + rect.width, rect.top, rect.width, rect.height)
+        self.draw_children(self.node, c_rect, self.n_cols - 1)
 
     def draw_children(self, node: Node, rect: Rect, cols: int) -> None:
         if cols <= 0:
@@ -42,31 +42,39 @@ class XduCanvas(tkinter.Canvas):
             return
 
         top = rect.top
-
         for child in node.children:
-            percentage = child.size / total_size
-            height = int(percentage * rect.height + 0.5)
-            if height <= 1:
-                continue
-            c_rect = Rect(rect.left, top, rect.width, height)
-            self.draw_rect(child.name, child.size, c_rect)
-            child.rect = c_rect
+            top += self.draw_child(child, rect, top, total_size, cols)
 
-            c2_rect = Rect(rect.left + rect.width, top, rect.width, height)
-            self.draw_children(child, c2_rect, cols - 1)
+    def draw_child(
+        self, node: Node, parent_rect: Rect, top: int, total_size: int, cols: int
+    ) -> int:
+        percentage = node.size / total_size
+        height = int(percentage * parent_rect.height + 0.5)
+        if height <= 1:
+            return 0
+        node.rect = Rect(parent_rect.left, top, parent_rect.width, height)
+        self.draw_node(node)
 
-            top += height
+        c_left = parent_rect.left + parent_rect.width
+        c_rect = Rect(c_left, top, parent_rect.width, height)
+        self.draw_children(node, c_rect, cols - 1)
 
-    def draw_rect(self, name: str, size: int, rect: Rect) -> None:
+        return height
+
+    def draw_node(self, node: Node) -> None:
+        rect = node.rect
         width = rect.left + rect.width
         height = rect.top + rect.height
         self.create_rectangle(rect.left, rect.top, width, height)
 
         # TODO: Ability to disable show size
         if rect.height >= self.text_height + 2:
-            x = rect.left + 5
-            y = rect.top + rect.height / 2
-            self.create_text(x, y, text=f"{name} ({size})", anchor=tkinter.W)
+            self.create_text(
+                rect.left + 5,
+                rect.top + rect.height / 2,
+                text=f"{node.name} ({node.size})",
+                anchor=tkinter.W,
+            )
 
     def determine_text_height(self) -> int:
         text_id = self.create_text(0, 0, text="A")
@@ -78,7 +86,7 @@ class XduCanvas(tkinter.Canvas):
         rect = Rect(3, 3, int(self.width / self.n_cols) - 2, self.height - 2)
         self.delete("all")
         self.node.clear_rects()
-        self.draw_node(rect)
+        self.draw_node_and_children(rect)
 
     def on_click(self, event: Any) -> None:
         n = self.node.find_node(event.x, event.y)
