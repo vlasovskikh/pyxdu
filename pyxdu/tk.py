@@ -7,16 +7,22 @@ from pyxdu.xdu import Node, Rect, parse_file, Order
 class XduCanvas(tkinter.Canvas):
     top: Node
     node: Node
-    text_height: int
+    width: int
+    height: int
     n_cols: int
+    text_height: int
 
-    def __init__(self, node: Node, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self.n_cols = 5
+    def __init__(
+        self, parent: tkinter.Misc, node: Node, width: int, height: int
+    ) -> None:
+        super().__init__(parent, width=width, height=height)
         self.top = node
         self.node = node
-        self.bind("<Button-1>", self.on_click)
+        self.width = width
+        self.height = height
+        self.n_cols = 5
         self.text_height = self.determine_text_height()
+        self.bind("<Button-1>", self.on_click)
 
     def draw_node(self, rect: Rect) -> None:
         self.draw_rect(self.node.name, self.node.size, rect)
@@ -67,8 +73,8 @@ class XduCanvas(tkinter.Canvas):
         self.delete(text_id)
         return y2 - y1
 
-    def repaint(self, width: int, height: int) -> None:
-        rect = Rect(3, 3, int(width / self.n_cols) - 2, height - 2)
+    def repaint(self) -> None:
+        rect = Rect(3, 3, int(self.width / self.n_cols) - 2, self.height - 2)
         self.delete("all")
         self.node.clear_rects()
         self.draw_node(rect)
@@ -79,20 +85,18 @@ class XduCanvas(tkinter.Canvas):
             n = self.node.parent
         if n is not None:
             self.node = n
-            self.repaint(800, 600)
+            self.repaint()
 
 
 def main_loop(filename: str, order: Order) -> None:
     tk = tkinter.Tk()
     tk.title("pyxdu")
-    width = 800
-    height = 600
     top = parse_file(filename)
     if order != Order.DEFAULT:
         top.sort_tree(order)
-    canvas = XduCanvas(top, tk, width=width, height=height)
+    canvas = XduCanvas(tk, top, width=800, height=600)
     canvas.pack()
-    canvas.repaint(width, height)
+    canvas.repaint()
 
     # Hack to bring the window to the foreground
     tk.attributes("-topmost", True)
