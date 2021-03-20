@@ -97,11 +97,9 @@ class XduCanvas(tkinter.Canvas):
             self.repaint()
 
     def on_resize(self, event: Any) -> None:
-        w_scale = event.width / self.width
-        h_scale = event.height / self.height
-        self.scale("all", 0, 0, w_scale, h_scale)
         self.width = event.width
         self.height = event.height
+        self.repaint()
 
 
 def main_loop(filename: str, order: Order) -> None:
