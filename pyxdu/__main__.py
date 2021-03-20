@@ -10,12 +10,10 @@ Options:
     --dump <file>   Dump tree as JSON for debugging.
 """
 
-import logging
+import docopt
 import os
 import sys
 from typing import List
-
-import docopt
 
 from pyxdu.tk import main_loop
 from pyxdu.xdu import Order, parse_file
@@ -49,7 +47,6 @@ def main(argv: List[str]) -> None:
 
 
 def run() -> None:
-    logging.basicConfig(level=logging.DEBUG)
     try:
         main(sys.argv[1:])
     except KeyboardInterrupt:

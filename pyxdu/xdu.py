@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import List, ClassVar, Optional, TextIO, Dict, Any, Union
 
-__all__ = ["Rect", "Order", "Node", "parse_file", "parse_fd"]
+__all__ = ["Rect", "Order", "Node", "parse_file", "parse_fd", "error"]
 
 
 class Order(Enum):
@@ -140,14 +140,19 @@ def parse_file(filename: str) -> Node:
 def parse_fd(fd: TextIO) -> Node:
     top = Node("[root]", -1)
     for line in fd:
-        size_str, name = line.strip().split(None, 1)
-        size = int(size_str)
+        try:
+            size_str, name = line.strip().split(None, 1)
+            size = int(size_str)
+        except ValueError:
+            error(f"Skipping: {line.strip()}")
+            continue
         parts = name.split(os.sep)
         if len(parts) > 0:
             if parts[0] == "":
                 parts[0] = "/"
             parts = [part for part in parts if part != "" and part != "."]
-            top.add_tree(parts, size)
+            if len(parts) > 0:
+                top.add_tree(parts, size)
 
     # don't display root if only one child
     if len(top.children) == 1:
@@ -157,3 +162,7 @@ def parse_fd(fd: TextIO) -> Node:
     top.fix_tree()
 
     return top
+
+
+def error(message: str) -> None:
+    print(f"pyxdu: {message}", file=sys.stderr)
