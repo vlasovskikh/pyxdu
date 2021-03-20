@@ -65,7 +65,11 @@ program.~~
 Keystrokes
 ----------
 
-...
+* `1-9`, `0`
+    * Sets the number of columns in the display (0 = 10). 
+* `/`
+    * Goto the root.
+* ...
 
 
 Example

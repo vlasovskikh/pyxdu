@@ -9,6 +9,10 @@ Options:
     -n                  Sort in numerical order.
     -c --columns <num>  Display <num> columns [default: 6].
     --dump <file>       Dump tree as JSON for debugging.
+
+Keystrokes:
+    1-9,0       Sets the number of columns in the display (0 = 10).
+    /           Goto the root.
 """
 
 import docopt

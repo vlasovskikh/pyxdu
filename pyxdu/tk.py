@@ -1,4 +1,5 @@
 import tkinter
+
 from typing import Any
 
 from pyxdu.xdu import Node, Rect, parse_file, Order
@@ -24,6 +25,10 @@ class XduCanvas(tkinter.Canvas):
         self.text_height = self.determine_text_height()
         self.bind("<Button-1>", self.on_click)
         self.bind("<Configure>", self.on_resize)
+        for i in range(10):
+            self.bind(f"<KeyPress-{i}>", self.on_n_columns)
+        self.bind("<KeyPress-/>", self.on_reset)
+        self.repaint()
 
     def draw_node_and_children(self, rect: Rect) -> None:
         self.node.rect = rect
@@ -104,6 +109,15 @@ class XduCanvas(tkinter.Canvas):
         self.height = event.height
         self.repaint()
 
+    def on_n_columns(self, event: Any) -> None:
+        n = int(event.char)
+        self.columns = 10 if n == 0 else n
+        self.repaint()
+
+    def on_reset(self, _event: Any) -> None:
+        self.node = self.top
+        self.repaint()
+
 
 def main_loop(filename: str, *, order: Order, columns: int) -> None:
     tk = tkinter.Tk()
@@ -113,7 +127,7 @@ def main_loop(filename: str, *, order: Order, columns: int) -> None:
         top.sort_tree(order)
     canvas = XduCanvas(tk, top, width=800, height=600, columns=columns)
     canvas.pack(fill="both", expand=True)
-    canvas.repaint()
+    canvas.focus_set()
 
     # Hack to bring the window to the foreground
     tk.attributes("-topmost", True)
