@@ -1,5 +1,5 @@
-pyxdu(1)
-========
+pyxdu
+=====
 
 _Pyxdu_ is a Python "port" of _xdu_, an X window utility. _Pyxdu_ is a retro tool that
 tries to follow the style of 1990s in its visual design.
