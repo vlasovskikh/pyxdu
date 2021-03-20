@@ -49,6 +49,8 @@ def main(argv: List[str]) -> None:
         error("Columns count must be integer")
         sys.exit(1)
 
+    # TODO: Handle more CLI options
+
     dump_file = opts["--dump"]
     if dump_file:
         top = parse_file(filename)

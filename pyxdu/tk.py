@@ -38,6 +38,8 @@ class XduCanvas(tkinter.Canvas):
         self.bind("<KeyPress-q>", self.on_quit)
         self.bind("<Escape>", self.on_quit)
 
+        # TODO: Handle more commands
+
     def draw_node_and_children(self, rect: Rect) -> None:
         self.node.rect = rect
         self.draw_node(self.node)
@@ -144,7 +146,5 @@ def main_loop(filename: str, *, order: Order, columns: int) -> None:
     tk.attributes("-topmost", True)
     tk.update()
     tk.attributes("-topmost", False)
-
-    # TODO: Handle commands
 
     tk.mainloop()
