@@ -5,15 +5,23 @@ Usage: pyxdu [options] <file>
        pyxdu --help
 
 Options:
-    -h --help           Show this message.
-    -n                  Sort in numerical order.
-    -c --columns <num>  Display <num> columns [default: 6].
-    --dump <file>       Dump tree as JSON for debugging.
+    -h --help      Show this message.
+    -a             Sort in alphabetical order.
+    -n             Sort in numerical order (the largest first).
+    -r             Reverse sense of sort (e.g. -rn means the smallest first).
+    -c <num>       Display <num> columns [default: 6].
+    --dump <file>  Dump tree as JSON for debugging.
 
 Keystrokes:
-    1-9,0           Sets the number of columns in the display (0 = 10).
-    /               Goto the root.
-    q, Escape       Exit the program.
+    1-9,0      Sets the number of columns in the display (0 = 10).
+    a          Alphabetical sort.
+    n          Numerical sort (the largest first).
+    f          First-in-first-out sort (this is the order the data was read
+                                        into the program).
+    l          Last-in-first-out sort.
+    r          Reverse sense of sort.
+    /          Goto the root.
+    q, Escape  Exit the program.
 
 See also the documentation at https://github.com/vlasovskikh/pyxdu
 """
@@ -21,14 +29,13 @@ See also the documentation at https://github.com/vlasovskikh/pyxdu
 import docopt
 import os
 import sys
-from typing import List
+from typing import List, Dict, Any
 
 from pyxdu.tk import main_loop
 from pyxdu.xdu import Order, parse_file, error
 
 
 def main(argv: List[str]) -> None:
-    order = Order.DEFAULT
     opts = docopt.docopt(__doc__, argv)
 
     if opts["<file>"] in ("-", None):
@@ -40,16 +47,15 @@ def main(argv: List[str]) -> None:
     else:
         filename = opts["<file>"]
 
-    if opts["-n"]:
-        order = Order.SIZE
+    order = parse_order(opts)
 
     try:
-        columns = int(opts["--columns"])
+        columns = int(opts["-c"])
     except ValueError:
         error("Columns count must be integer")
         sys.exit(1)
 
-    # TODO: Handle more CLI options
+    # TODO: Handle more CLI options: -s, --background <color>, --foreground <color>
 
     dump_file = opts["--dump"]
     if dump_file:
@@ -60,6 +66,17 @@ def main(argv: List[str]) -> None:
             fd.write(top.dump_tree())
     else:
         main_loop(filename, order=order, columns=columns)
+
+
+def parse_order(opts: Dict[str, Any]) -> Order:
+    if opts["-a"]:
+        order = Order.ALPHA
+    elif opts["-n"]:
+        order = Order.SIZE
+    else:
+        order = Order.DEFAULT
+
+    return -order if opts["-r"] else order
 
 
 def run() -> None:

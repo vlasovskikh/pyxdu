@@ -12,10 +12,18 @@ class XduCanvas(tkinter.Canvas):
     width: int
     height: int
     columns: int
+    order: Order
     text_height: int
 
     def __init__(
-        self, parent: tkinter.Misc, node: Node, *, width: int, height: int, columns: int
+        self,
+        parent: tkinter.Misc,
+        node: Node,
+        *,
+        width: int,
+        height: int,
+        columns: int,
+        order: Order,
     ) -> None:
         super().__init__(parent, width=width, height=height)
         self.parent = parent
@@ -24,7 +32,11 @@ class XduCanvas(tkinter.Canvas):
         self.width = width
         self.height = height
         self.columns = columns
+        self.order = order
         self.text_height = self.determine_text_height()
+
+        if order != Order.DEFAULT:
+            self.node.sort_tree(order)
 
         self.bind_handlers()
         self.repaint()
@@ -32,13 +44,20 @@ class XduCanvas(tkinter.Canvas):
     def bind_handlers(self) -> None:
         self.bind("<Button-1>", self.on_click)
         self.bind("<Configure>", self.on_resize)
+
         for i in range(10):
             self.bind(f"<KeyPress-{i}>", self.on_n_columns)
+
+        self.bind("<KeyPress-a>", lambda _: self.reorder(Order.ALPHA))
+        self.bind("<KeyPress-n>", lambda _: self.reorder(Order.SIZE))
+        self.bind("<KeyPress-f>", lambda _: self.reorder(Order.FIRST))
+        self.bind("<KeyPress-l>", lambda _: self.reorder(Order.LAST))
+        self.bind("<KeyPress-r>", lambda _: self.reorder(-self.order))
         self.bind("<KeyPress-/>", self.on_reset)
         self.bind("<KeyPress-q>", self.on_quit)
         self.bind("<Escape>", self.on_quit)
 
-        # TODO: Handle more commands
+        # TODO: Handle more commands: s, h, i
 
     def draw_node_and_children(self, rect: Rect) -> None:
         self.node.rect = rect
@@ -106,6 +125,11 @@ class XduCanvas(tkinter.Canvas):
         self.node.clear_rects()
         self.draw_node_and_children(rect)
 
+    def reorder(self, order: Order) -> None:
+        self.order = order
+        self.node.sort_tree(self.order)
+        self.repaint()
+
     def on_click(self, event: Any) -> None:
         n = self.node.find_node(event.x, event.y)
         if n == self.node:
@@ -136,9 +160,7 @@ def main_loop(filename: str, *, order: Order, columns: int) -> None:
     tk = tkinter.Tk()
     tk.title("pyxdu")
     top = parse_file(filename)
-    if order != Order.DEFAULT:
-        top.sort_tree(order)
-    canvas = XduCanvas(tk, top, width=800, height=600, columns=columns)
+    canvas = XduCanvas(tk, top, width=800, height=600, columns=columns, order=order)
     canvas.pack(fill="both", expand=True)
     canvas.focus_set()
 

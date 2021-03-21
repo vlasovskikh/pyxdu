@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
+from enum import Enum, auto
+
 import json
 import os
 import sys
-from dataclasses import dataclass
-from enum import Enum, auto
-from typing import List, ClassVar, Optional, TextIO, Dict, Any, Union
+from typing import List, ClassVar, Optional, TextIO, Dict, Union, Any
 
 __all__ = ["Rect", "Order", "Node", "parse_file", "parse_fd", "error"]
 
@@ -19,10 +20,27 @@ class Order(Enum):
     R_SIZE = auto()
 
     def sort_key(self, node: Node) -> Any:
-        if self == Order.SIZE:
-            return -node.size
+        if self == Order.SIZE or self == Order.R_SIZE:
+            return node.size
+        elif self == Order.ALPHA or self == Order.R_ALPHA:
+            return node.name
         else:
             return node.num
+
+    @property
+    def reverse(self) -> bool:
+        return self in {Order.LAST, Order.R_ALPHA, Order.SIZE}
+
+    def __neg__(self) -> Order:
+        return reversed_orders[self]
+
+
+reversed_orders: Dict[Order, Order] = {
+    Order.FIRST: Order.LAST,
+    Order.ALPHA: Order.R_ALPHA,
+    Order.SIZE: Order.R_SIZE,
+}
+reversed_orders.update({v: k for k, v in reversed_orders.items()})
 
 
 @dataclass
@@ -128,7 +146,7 @@ class Node:
     def sort_tree(self, order: Order) -> None:
         for child in self.children:
             child.sort_tree(order)
-        self.children.sort(key=order.sort_key)
+        self.children.sort(key=order.sort_key, reverse=order.reverse)
 
 
 def parse_file(filename: str) -> Node:
