@@ -1,17 +1,13 @@
 pyxdu
 =====
 
-_Pyxdu_ is a Python port of "xdu", an X window disk usage utility. _Pyxdu_ is a retro
-tool that tries to follow the style of 1990s in its visual design.
+Pyxdu — display the output of "du" disk usage tool in a window.
 
+Pyxdu is a Python port of "xdu", an X window disk usage utility. Pyxdu is a retro tool
+that tries to follow the style of 1990s in its visual design.
 
-Current status: pyxdu is **not released yet**. It's in active development.
-
-
-Name
-----
-
-Pyxdu — display the output of "du" disk usage tool in a window
+[![PyPI](https://img.shields.io/pypi/v/pyxdu)](https://pypi.org/project/pyxdu/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/pyxdu)](https://pypi.org/project/pyxdu/)
 
 
 Example
@@ -27,13 +23,13 @@ du -m /usr | pyxdu -n
 ![Dark theme][dark]
 
 
-Synopsis
---------
+Installation
+------------
 
-```
-pyxdu [options] <file>
-pyxdu [options] [-]
-pyxdu --help
+You can install pyxdu on Python 3.7 or newer using pip:
+
+```shell
+pip install pyxdu
 ```
 
 
@@ -124,4 +120,4 @@ version xdu 3.0 was released on 1994-06-05.
 [xdu]: https://github.com/vlasovskikh/xdu
 [poetry]: https://python-poetry.org
 [vlasovskikh]: https://pirx.ru
-[dark]: media/dark.png
+[dark]: https://raw.githubusercontent.com/vlasovskikh/pyxdu/main/media/dark.png
