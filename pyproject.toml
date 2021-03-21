@@ -4,6 +4,17 @@ version = "0.1.0"
 description = "Display the output of \"du\" in a window."
 authors = ["Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+repository = "https://github.com/vlasovskikh/pyxdu"
+keywords = ["gui", "disk-usage", "tkinter", "xdu", "disk-space"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: MacOS X",
+    "Environment :: X11 Applications",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Desktop Environment :: File Managers",
+    "Topic :: System :: Filesystems",
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
