@@ -1,8 +1,24 @@
-import tkinter
-
 from typing import Any
 
 from pyxdu.xdu import Node, Rect, parse_file, Order
+
+try:
+    import tkinter
+except ModuleNotFoundError:
+    # Hack to suggest the workaround after
+    # https://github.com/Homebrew/homebrew-core/pull/73846
+    import sys
+    from pathlib import Path
+
+    executable = Path(sys.executable).resolve()
+    if sys.platform == "darwin" and executable.is_relative_to("/usr/local/Cellar"):
+        raise Exception(
+            "Tkinter is no longer included with Python from Homebrew. "
+            "Install Tk separately:\n"
+            "    brew install python-tk"
+        )
+    else:
+        raise
 
 
 class XduCanvas(tkinter.Canvas):
