@@ -67,6 +67,8 @@ There are several command line options available.
   * ~~Determines the color of the background.~~ (not supported yet)
 * `--dump <file>`
   * Dump tree as JSON for debugging.
+* `--traceback`
+  * Print traceback on exceptions.
 
 Mouse Actions
 -------------

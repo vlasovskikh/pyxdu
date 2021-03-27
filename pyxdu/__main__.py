@@ -11,6 +11,7 @@ Options:
     -r             Reverse sense of sort (e.g. -rn means the smallest first).
     -c <num>       Display <num> columns [default: 6].
     --dump <file>  Dump tree as JSON for debugging.
+    --traceback    Print traceback on exceptions.
 
 Keystrokes:
     1-9,0      Sets the number of columns in the display (0 = 10).
@@ -31,12 +32,17 @@ import os
 import sys
 from typing import List, Dict, Any
 
-from pyxdu.tk import main_loop
 from pyxdu.xdu import Order, parse_file, error
+
+
+show_traceback = False
 
 
 def main(argv: List[str]) -> None:
     opts = docopt.docopt(__doc__, argv)
+
+    global show_traceback
+    show_traceback = opts["--traceback"]
 
     if opts["<file>"] in ("-", None):
         if os.isatty(sys.stdin.fileno()):
@@ -49,11 +55,11 @@ def main(argv: List[str]) -> None:
 
     order = parse_order(opts)
 
+    opt_c = opts["-c"]
     try:
-        columns = int(opts["-c"])
+        columns = int(opt_c)
     except ValueError:
-        error("Columns count must be integer")
-        sys.exit(1)
+        raise ValueError(f"Columns count must be integer, got '{opt_c}' instead")
 
     # TODO: Handle more CLI options: -s, --background <color>, --foreground <color>
 
@@ -65,6 +71,8 @@ def main(argv: List[str]) -> None:
         with open(dump_file, "w") as fd:
             fd.write(top.dump_tree())
     else:
+        from pyxdu.tk import main_loop
+
         main_loop(filename, order=order, columns=columns)
 
 
@@ -84,6 +92,12 @@ def run() -> None:
         main(sys.argv[1:])
     except KeyboardInterrupt:
         print("Interrupted")
+    except Exception as e:
+        if show_traceback:
+            raise
+        else:
+            error(str(e))
+            sys.exit(1)
 
 
 if __name__ == "__main__":
