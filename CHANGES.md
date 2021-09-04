@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.0 - 2021-09-04
+
+This release is dedicated to the original XDU 1.0, released 30 years ago by Phil 
+Dykstra on 1991-09-04.
+
+### Changed
+
+* Show example commands in `pyxdu --help` and on the website
+
 ## 0.3.0 - 2021-03-28
 
 ### Changed
