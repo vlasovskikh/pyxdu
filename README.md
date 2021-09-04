@@ -32,6 +32,15 @@ You can install pyxdu on Python 3.7 or newer using pip:
 pip install pyxdu
 ```
 
+### macOS
+
+The recommended way of installing pyxdu on macOS is via [Homebrew](https://brew.sh) 
+and [pipx](https://pypa.github.io/pipx/):
+
+```shell
+brew install python python-tk pipx
+pipx install pyxdu
+```
 
 Description
 -----------
