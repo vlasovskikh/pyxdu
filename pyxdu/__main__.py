@@ -14,15 +14,22 @@ Options:
     --traceback    Print traceback on exceptions.
 
 Keystrokes:
-    1-9,0      Sets the number of columns in the display (0 = 10).
-    a          Alphabetical sort.
-    n          Numerical sort (the largest first).
-    f          First-in-first-out sort (this is the order the data was read
-                                        into the program).
-    l          Last-in-first-out sort.
-    r          Reverse sense of sort.
-    /          Goto the root.
-    q, Escape  Exit the program.
+    1-9,0       Sets the number of columns in the display (0 = 10).
+    a           Alphabetical sort.
+    n           Numerical sort (the largest first).
+    f           First-in-first-out sort (this is the order the data was read
+                                         into the program).
+    l           Last-in-first-out sort.
+    r           Reverse sense of sort.
+    /           Goto the root.
+    q, Escape   Exit the program.
+
+Examples:
+    du -m /usr | pyxdu -n
+        Show the disk usage in /usr in megabytes.
+
+    find . -name '*.py' -print0 | xargs -0 wc -l | grep -v total$ | pyxdu -n
+        Count the lines of code for all the Python files under the current directory.
 
 See also the documentation at https://github.com/vlasovskikh/pyxdu
 """

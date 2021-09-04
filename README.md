@@ -10,17 +10,36 @@ that tries to follow the style of 1990s in its visual design.
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/pyxdu)](https://pypi.org/project/pyxdu/)
 
 
-Example
--------
+Examples
+--------
 
-Run "du" to show disk usage for directory _/usr_ in megabytes, pipe the output to
-"pyxdu", sort directories in numerical order:
+### Disk Usage
+
+Show the disk usage in /usr in megabytes:
 
 ```shell
 du -m /usr | pyxdu -n
 ```
 
-![Dark theme][dark]
+It runs "du" to show disk usage for directory _/usr_ in megabytes, pipes the output to
+"pyxdu":
+
+![Diagram: Disk Usage][dark]
+
+### Lines of Code
+
+Count the lines of code for all the Python files under the current directory:
+
+```shell
+find . -name '*.py' -print0 | xargs -0 wc -l | grep -v total$ | pyxdu -n
+```
+
+It runs "find" to list all the files named "*.py" in the current directory, pipes the
+output as the arguments of "wc" to count number of lines in each file (accounting 
+for spaces in file names), strips the line with the total amount of lines via "grep", 
+pipes the result to "pyxdu":
+
+![Diagram: Lines of Code][loc]
 
 
 Installation
@@ -159,3 +178,4 @@ version xdu 3.0 was released on 1994-06-05.
 [poetry]: https://python-poetry.org
 [vlasovskikh]: https://pirx.ru
 [dark]: https://raw.githubusercontent.com/vlasovskikh/pyxdu/main/media/dark.png
+[loc]: https://raw.githubusercontent.com/vlasovskikh/pyxdu/main/media/loc.png
