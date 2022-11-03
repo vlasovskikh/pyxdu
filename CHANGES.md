@@ -1,13 +1,16 @@
 # Change Log
 
-## Unreleased
+## 1.0.1 - 2022-11-03
+
+### Changed
+
+* Compatibility with Python 3.8-3.11
 
 ### Fixed
 
 * Fixed "slash" keypress binding on Linux
   ([#2](https://github.com/vlasovskikh/pyxdu/pull/2))
   (Thanks to [@SarahTisdaleMS](https://github.com/SarahTisdaleMS))
-
 
 ## 1.0.0 - 2021-09-04
 
