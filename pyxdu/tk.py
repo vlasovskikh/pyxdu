@@ -69,7 +69,7 @@ class XduCanvas(tkinter.Canvas):
         self.bind("<KeyPress-f>", lambda _: self.reorder(Order.FIRST))
         self.bind("<KeyPress-l>", lambda _: self.reorder(Order.LAST))
         self.bind("<KeyPress-r>", lambda _: self.reorder(-self.order))
-        self.bind("<KeyPress-/>", self.on_reset)
+        self.bind("<KeyPress-slash>", self.on_reset)
         self.bind("<KeyPress-q>", self.on_quit)
         self.bind("<Escape>", self.on_quit)
 
