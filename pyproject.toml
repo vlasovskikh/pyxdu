@@ -8,7 +8,7 @@ readme = "README.md"
 repository = "https://github.com/vlasovskikh/pyxdu"
 keywords = ["gui", "disk-usage", "tkinter", "xdu", "disk-space"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: MacOS X",
     "Environment :: X11 Applications",
     "Intended Audience :: End Users/Desktop",
@@ -17,17 +17,15 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 docopt = "^0.6.2"
 
 [tool.poetry.dev-dependencies]
-black = {extras = ["d"], version = "^21.8b0"}
-pytest = "^6.1.1"
-coverage = "^5.3"
+black = {extras = ["d"], version = ">=22.10.0"}
+pytest = "^7.2.0"
+coverage = "^6.5.0"
 pyinstrument = "^4.0.3"
 pre-commit = "^2.11.0"
-flake8 = "^3.8.4"
-mypy = "^0.910"
 
 [tool.poetry.scripts]
 pyxdu = "pyxdu.__main__:run"
