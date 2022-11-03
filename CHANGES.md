@@ -1,5 +1,14 @@
 # Change Log
 
+## Unreleased
+
+### Fixed
+
+* Fixed "slash" keypress binding on Linux
+  ([#2](https://github.com/vlasovskikh/pyxdu/pull/2))
+  (Thanks to [@SarahTisdaleMS](https://github.com/SarahTisdaleMS))
+
+
 ## 1.0.0 - 2021-09-04
 
 This release is dedicated to the original XDU 1.0, released 30 years ago by Phil 
