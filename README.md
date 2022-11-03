@@ -147,7 +147,7 @@ Development
 
 Development requirements:
 
-* Python 3.7 or newer
+* Python 3.8 or newer
 * [Poetry][]
 
 Set up a development environment:
