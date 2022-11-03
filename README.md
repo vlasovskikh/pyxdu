@@ -45,7 +45,7 @@ pipes the result to "pyxdu":
 Installation
 ------------
 
-You can install pyxdu on Python 3.7 or newer using pip:
+You can install pyxdu on Python 3.8 or newer using pip:
 
 ```shell
 pip install pyxdu
