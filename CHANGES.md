@@ -7,6 +7,10 @@
 * Compatibility with Python 3.10-3.14
 * Updated dev dependencies to latest versions
 
+### Fixed
+
+* Suggest `brew install python-tk` for missing tkinter on Apple Silicon Macs
+
 ## 1.0.1 - 2022-11-03
 
 ### Changed

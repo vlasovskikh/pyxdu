@@ -4,19 +4,21 @@ from pyxdu.xdu import Node, Rect, parse_file, Order
 
 try:
     import tkinter
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError) as e:
     # Hack to suggest the workaround after
     # https://github.com/Homebrew/homebrew-core/pull/73846
     import sys
     from pathlib import Path
 
     executable = Path(sys.executable).resolve()
-    if sys.platform == "darwin" and executable.is_relative_to("/usr/local/Cellar"):
+    homebrew_paths = [Path("/usr/local/Cellar"), Path("/opt/homebrew/Cellar")]
+    is_homebrew = any(executable.is_relative_to(p) for p in homebrew_paths)
+    if sys.platform == "darwin" and is_homebrew:
         raise Exception(
             "Tkinter is no longer included with Python from Homebrew. "
             "Install Tk separately:\n"
             "    brew install python-tk"
-        )
+        ) from e
     else:
         raise
 
