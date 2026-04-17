@@ -45,7 +45,7 @@ pipes the result to "pyxdu":
 Installation
 ------------
 
-You can install pyxdu on Python 3.8 or newer using pip:
+You can install pyxdu on Python 3.10 or newer using pip:
 
 ```shell
 pip install pyxdu
@@ -147,7 +147,7 @@ Development
 
 Development requirements:
 
-* Python 3.8 or newer
+* Python 3.10 or newer
 * [Poetry][]
 
 Set up a development environment:
